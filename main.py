@@ -1,5 +1,4 @@
 from flight_environment import FlightEnvironment
-from path_planner import AStarPlanner
 
 env = FlightEnvironment(50)
 start = (1,2,0)
