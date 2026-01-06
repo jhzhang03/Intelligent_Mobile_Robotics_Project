@@ -1,4 +1,10 @@
 from flight_environment import FlightEnvironment
+from path_planner import AStarPlanner3D
+from trajectory_generator import TrajectoryGenerator
+
+import numpy as np
+
+
 
 env = FlightEnvironment(50)
 start = (1,2,0)
@@ -13,13 +19,12 @@ goal = (18,18,3)
 #   - column 3 contains the z-coordinates of all path points
 # This `path` array will be provided to the `env` object for visualization.
 
-path = [[0,0,0],[1,1,1],[2,2,2],[3,3,3]]
+planner = AStarPlanner3D(env, resolution=0.2, safety_margin=0.1)
+path = planner.plan(start, goal)
 
 # --------------------------------------------------------------------------------------------------- #
 
-
 env.plot_cylinders(path)
-
 
 # --------------------------------------------------------------------------------------------------- #
 #   Call your trajectory planning algorithm here. The algorithm should
@@ -34,12 +39,12 @@ env.plot_cylinders(path)
 #   points on the same figure to clearly show how the continuous trajectory
 #   follows these path points.
 
-
-
+trajectory_generator = TrajectoryGenerator(planner)
+trajectory_x, trajectory_y, trajectory_z = trajectory_generator.generate_trajectory(path)
+trajectory = np.array([trajectory_x, trajectory_y, trajectory_z])
+trajectory_generator.plot_trajectory(trajectory)
 
 # --------------------------------------------------------------------------------------------------- #
-
-
 
 # You must manage this entire project using Git. 
 # When submitting your assignment, upload the project to a code-hosting platform 
